@@ -1,0 +1,9 @@
+.host-form {
+  min-width: 150px;
+  max-width: 250px;
+  width: 100%;
+}
+
+.host-full-width {
+  width: 100%;
+}

@@ -1,0 +1,6 @@
+<form class="host-form" [formGroup]="hostForm" (ngSubmit)="this.setHost()">
+  <mat-form-field class="host-full-width">
+    <input matInput #host placeholder="Host Name or IP" formControlName="host" />
+    <button mat-raised-button matSuffix type="submit">Set</button>
+  </mat-form-field>
+</form>
