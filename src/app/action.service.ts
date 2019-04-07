@@ -14,7 +14,7 @@ const httpOptions = {
 })
 export class ActionService {
 
-  private host: string;
+  private host: string = "";
   private statusEndpoint: string = `/status`;
   private sequenceEndpoint: string = `/sequence`;
   private configEndpoint: string = `/config`;
@@ -30,21 +30,25 @@ export class ActionService {
   constructor(private http: HttpClient) { }
 
   public getStatus(): Observable<StatusResponse> {
-    return this.http.get<StatusResponse>(`${this.host}${this.statusEndpoint}`);
+    return this.http.get<StatusResponse>(`http://${this.host}${this.statusEndpoint}`);
   }
 
   public setPlayMode(playMode: number): Observable<PlayModeResponse> {
     let playModeRequest = new PlayModeRequest();
     playModeRequest.PlayMode = playMode;
 
-    return this.http.post<PlayModeResponse>(`${this.host}${this.setPlayModeEndpoint}`, playModeRequest, httpOptions);
+    return this.http.post<PlayModeResponse>(`http://${this.host}${this.setPlayModeEndpoint}`, playModeRequest, httpOptions);
   }
 
   public getPlayModeDump(): Observable<PlayModeResponse> {
-    return this.http.get<PlayModeResponse>(`${this.host}${this.playModeDumpEndpoint}`);
+    return this.http.get<PlayModeResponse>(`http://${this.host}${this.playModeDumpEndpoint}`);
   }
 
   public setHost(host: string): void {
     this.host = host;
+  }
+
+  public getHost(): string {
+    return this.host;
   }
 }
