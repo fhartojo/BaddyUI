@@ -7,6 +7,7 @@ import { MatTabsModule } from '@angular/material/tabs';
 import { MatInputModule } from '@angular/material/input';
 import { MatTableModule } from '@angular/material/table';
 import { MatButtonModule } from '@angular/material/button';
+import { MatGridListModule } from '@angular/material/grid-list';
 import { HttpClientModule } from '@angular/common/http';
 import { ReactiveFormsModule } from '@angular/forms';
 import { ConfigComponent } from './config/config.component';
@@ -28,6 +29,7 @@ import { StatusComponent } from './status/status.component';
     MatInputModule,
     MatTableModule,
     MatButtonModule,
+    MatGridListModule,
     ReactiveFormsModule
   ],
   providers: [],
