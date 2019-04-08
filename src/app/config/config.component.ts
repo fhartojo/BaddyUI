@@ -82,4 +82,8 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     });
   }
+
+  public editMotorSpeed(shotProfile: ShotProfile): void {
+    console.log(shotProfile);
+  }
 }
