@@ -10,11 +10,14 @@ import { MatButtonModule } from '@angular/material/button';
 import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRippleModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
+import { MatRadioModule } from '@angular/material/radio';
+import { MatSliderModule } from '@angular/material/slider';
 import { HttpClientModule } from '@angular/common/http';
-import { ReactiveFormsModule } from '@angular/forms';
+import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfigComponent } from './config/config.component';
 import { PlayComponent } from './play/play.component';
 import { StatusComponent } from './status/status.component';
+import 'hammerjs';
 
 @NgModule({
   declarations: [
@@ -34,6 +37,9 @@ import { StatusComponent } from './status/status.component';
     MatGridListModule,
     MatRippleModule,
     MatSelectModule,
+    MatRadioModule,
+    MatSliderModule,
+    FormsModule,
     ReactiveFormsModule
   ],
   providers: [],

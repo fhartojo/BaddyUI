@@ -11,6 +11,8 @@ export class PlayComponent implements OnInit {
 
   public tiles: Tile[] = [];
   public sequence: number[] = [];
+  public sequenceMode: string = "";
+  public sequenceInterval: string = "";
 
   constructor(private actionService: ActionService) { }
 
@@ -33,8 +35,19 @@ export class PlayComponent implements OnInit {
     this.sequence = this.sequence.concat(newSequence);
   }
 
-  public clearSequence(): void {
+  public startSequence(): void {
+    console.log(`this.sequence:  ${this.sequence}`);
+    console.log(`this.sequenceMode:  ${this.sequenceMode}`);
+    console.log(`this.sequenceInterval:  ${this.sequenceInterval}`);
+  }
+
+  public stopSequence(): void {
+  }
+
+  public resetAll(): void {
     this.sequence = [];
+    this.sequenceMode = "";
+    this.sequenceInterval = "";
   }
 }
 
