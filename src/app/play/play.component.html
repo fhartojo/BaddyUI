@@ -1,5 +1,27 @@
+<div class="grid-list-container">
 <mat-grid-list cols="3" rowHeight="1:1">
   <mat-grid-tile *ngFor="let tile of tiles">
-    {{tile.name}}
+    <div class="example-ripple-container mat-elevation-z4" matRipple [matRippleCentered]="false" [matRippleDisabled]="false" [matRippleUnbounded]="false" [matRippleColor]="green" (click)="this.addSequence(tile.position);">
+      {{tile.name}}
+    </div>
   </mat-grid-tile>
 </mat-grid-list>
+</div>
+
+<p>
+  Shot sequence:  {{sequence}}
+</p>
+
+<div class="grid-list-container">
+  <mat-grid-list cols="3" rowHeight="1:1">
+    <mat-grid-tile>
+      <button mat-raised-button color="warn">Stop</button>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <button mat-raised-button>Reset</button>
+    </mat-grid-tile>
+    <mat-grid-tile>
+      <button mat-raised-button color="primary">Go!</button>
+    </mat-grid-tile>
+  </mat-grid-list>
+</div>

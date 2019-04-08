@@ -1,3 +1,22 @@
-mat-grid-tile {
-  background: green;
+.grid-list-container {
+  width:450px;
+  height: 450px;
+}
+
+.example-ripple-container {
+  cursor: pointer;
+  text-align: center;
+  background: lightgreen;
+
+  width: 100px;
+  height: 100px;
+  line-height: 100px;
+
+  user-select: none;
+  -webkit-user-select: none;
+  -moz-user-select: none;
+  -ms-user-select: none;
+
+  -webkit-user-drag: none;
+  -webkit-tap-highlight-color: transparent;
 }

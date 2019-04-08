@@ -10,6 +10,7 @@ import { ShotProfileEnum } from '../shot-profile-enum.enum';
 export class PlayComponent implements OnInit {
 
   public tiles: Tile[] = [];
+  public sequence: number[] = [];
 
   constructor(private actionService: ActionService) { }
 
@@ -26,6 +27,15 @@ export class PlayComponent implements OnInit {
     }
   }
 
+  public addSequence(position: number): void {
+    let newSequence: number[] = [position];
+
+    this.sequence = this.sequence.concat(newSequence);
+  }
+
+  public clearSequence(): void {
+    this.sequence = [];
+  }
 }
 
 export class Tile {

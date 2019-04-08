@@ -2,6 +2,7 @@ import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } fr
 import { ActionService } from '../action.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
+import { PlayModeRequest } from '../play-mode-request';
 import { PlayModeResponse } from '../play-mode-response';
 import { ShotProfile } from '../shot-profile';
 import { ShotProfileEnum } from '../shot-profile-enum.enum';
@@ -20,6 +21,7 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private currentPlayMode: PlayModeResponse;
   private shotProfiles: ShotProfile[] = [];
+  public playModeSelection: string;
   public dataSource = new MatTableDataSource<ShotProfile>();
   public displayedColumns: string[] = ['type', 'leftMotorSpeed', 'rightMotorSpeed'];
 
@@ -51,6 +53,10 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
     }
   }
 
+  public setPlayMode(event: any): void {
+    console.log(`this.playModeSelection:  ${this.playModeSelection}`);
+  }
+
   public getPlayModeDump(): void {
     this.actionService.getPlayModeDump().subscribe({
       next: playModeResponse => this.currentPlayMode = playModeResponse
@@ -72,6 +78,7 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
         }
 
         this.dataSource.data = this.shotProfiles;
+        this.playModeSelection = String(this.currentPlayMode.PlayMode);
       }
     });
   }
