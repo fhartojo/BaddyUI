@@ -55,32 +55,39 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public setPlayMode(event: any): void {
     console.log(`this.playModeSelection:  ${this.playModeSelection}`);
+
+    this.actionService.setPlayMode(Number(this.playModeSelection)).subscribe({
+      next: playModeResponse => this.currentPlayMode = playModeResponse
+      , complete: () => this.processCurrentPlayMode()
+    });
   }
 
   public getPlayModeDump(): void {
     this.actionService.getPlayModeDump().subscribe({
       next: playModeResponse => this.currentPlayMode = playModeResponse
-      , complete: () => {
-        let i = 0;
-
-        for (var j in ShotProfileEnum) {
-          if (typeof ShotProfileEnum[j] === 'number') {
-            let shotProfile = new ShotProfile();
-
-            shotProfile.type = j;
-            shotProfile.leftMotorSpeed = this.currentPlayMode.CurrentSpeeds[i];
-            shotProfile.rightMotorSpeed = this.currentPlayMode.CurrentSpeeds[i + 1];
-
-            this.shotProfiles.push(shotProfile);
-
-            i += 2;
-          }
-        }
-
-        this.dataSource.data = this.shotProfiles;
-        this.playModeSelection = String(this.currentPlayMode.PlayMode);
-      }
+      , complete: () => this.processCurrentPlayMode()
     });
+  }
+
+  private processCurrentPlayMode(): void {
+    let i = 0;
+
+    for (var j in ShotProfileEnum) {
+      if (typeof ShotProfileEnum[j] === 'number') {
+        let shotProfile = new ShotProfile();
+
+        shotProfile.type = j;
+        shotProfile.leftMotorSpeed = this.currentPlayMode.CurrentSpeeds[i];
+        shotProfile.rightMotorSpeed = this.currentPlayMode.CurrentSpeeds[i + 1];
+
+        this.shotProfiles.push(shotProfile);
+
+        i += 2;
+      }
+    }
+
+    this.dataSource.data = this.shotProfiles;
+    this.playModeSelection = String(this.currentPlayMode.PlayMode);
   }
 
   public editMotorSpeed(shotProfile: ShotProfile): void {

@@ -1,6 +1,7 @@
 import { Component, OnInit } from '@angular/core';
 import { ActionService } from '../action.service';
 import { ShotProfileEnum } from '../shot-profile-enum.enum';
+import { SequenceRequest } from '../sequence-request';
 
 @Component({
   selector: 'app-play',
@@ -13,6 +14,7 @@ export class PlayComponent implements OnInit {
   public sequence: number[] = [];
   public sequenceMode: string = "";
   public sequenceInterval: string = "";
+  public interval: number[] = [];
 
   constructor(private actionService: ActionService) { }
 
@@ -39,9 +41,15 @@ export class PlayComponent implements OnInit {
     console.log(`this.sequence:  ${this.sequence}`);
     console.log(`this.sequenceMode:  ${this.sequenceMode}`);
     console.log(`this.sequenceInterval:  ${this.sequenceInterval}`);
+
+    this.actionService.startSequence(this.sequence, Number(this.sequenceMode), Number(this.sequenceInterval)).subscribe();
   }
 
   public stopSequence(): void {
+    this.actionService.stopSequence().subscribe();
+  }
+
+  public setSequenceInterval(event: any): void {
   }
 
   public resetAll(): void {

@@ -8,23 +8,34 @@
 </mat-grid-list>
 </div>
 
-<p>
+<div>
   Shot sequence:&nbsp;&nbsp;{{sequence}}
-</p>
+</div>
 
-<p>
+<div>
 <label id="sequence-mode-radio-group-label">Sequence mode:&nbsp;&nbsp;</label>
 <mat-radio-group aria-labelledby="sequence-mode-radio-group-label" [(ngModel)]="sequenceMode">
   <mat-radio-button value="0">Once</mat-radio-button>
   <mat-radio-button value="1">Loop</mat-radio-button>
   <mat-radio-button value="2">Random</mat-radio-button>
 </mat-radio-group>
-</p>
+</div>
 
-<p>
-<label id="sequence-interval-slider-label">Sequence Interval:&nbsp;&nbsp;</label>
-<mat-slider class="slider-margin" [max]=5 [min]=0 [step]=0.5 [thumbLabel]="true" [(ngModel)]="sequenceInterval"></mat-slider>
-</p>
+<mat-form-field>
+  <mat-label>Sequence interval</mat-label>
+  <mat-select [(value)]="sequenceInterval" (selectionChange)="this.setSequenceInterval($event)">
+    <mat-option value="0">0.5</mat-option>
+    <mat-option value="1">1</mat-option>
+    <mat-option value="2">1.5</mat-option>
+    <mat-option value="3">2</mat-option>
+    <mat-option value="4">2.5</mat-option>
+    <mat-option value="5">3</mat-option>
+    <mat-option value="6">3.5</mat-option>
+    <mat-option value="7">4</mat-option>
+    <mat-option value="8">4.5</mat-option>
+    <mat-option value="9">5</mat-option>
+  </mat-select>
+</mat-form-field>
 
 <div class="grid-list-container">
   <mat-grid-list cols="3" rowHeight="1:1">
