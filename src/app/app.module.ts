@@ -11,10 +11,12 @@ import { MatGridListModule } from '@angular/material/grid-list';
 import { MatRippleModule } from '@angular/material/core';
 import { MatSelectModule } from '@angular/material/select';
 import { MatRadioModule } from '@angular/material/radio';
-import { MatSliderModule } from '@angular/material/slider';
+import { MatSnackBarModule } from '@angular/material/snack-bar';
+import { MatDialogModule } from '@angular/material/dialog';
 import { HttpClientModule } from '@angular/common/http';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { ConfigComponent } from './config/config.component';
+import { EditMotorSpeedDialog } from './config/config.component';
 import { PlayComponent } from './play/play.component';
 import { StatusComponent } from './status/status.component';
 import 'hammerjs';
@@ -23,6 +25,7 @@ import 'hammerjs';
   declarations: [
     AppComponent,
     ConfigComponent,
+    EditMotorSpeedDialog,
     PlayComponent,
     StatusComponent
   ],
@@ -38,9 +41,13 @@ import 'hammerjs';
     MatRippleModule,
     MatSelectModule,
     MatRadioModule,
-    MatSliderModule,
+    MatSnackBarModule,
+    MatDialogModule,
     FormsModule,
     ReactiveFormsModule
+  ],
+  entryComponents: [
+    EditMotorSpeedDialog
   ],
   providers: [],
   bootstrap: [AppComponent]

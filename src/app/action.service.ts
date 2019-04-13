@@ -5,6 +5,8 @@ import { StatusResponse } from './status-response';
 import { PlayModeRequest }  from './play-mode-request';
 import { PlayModeResponse } from './play-mode-response';
 import { SequenceRequest } from './sequence-request';
+import { SetSpeedRequest } from './set-speed-request';
+import { SetSpeedResponse } from './set-speed-response';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
@@ -38,8 +40,6 @@ export class ActionService {
     let playModeRequest = new PlayModeRequest();
     playModeRequest.PlayMode = playMode;
 
-    console.log(JSON.stringify(playModeRequest));
-
     return this.http.post<PlayModeResponse>(`http://${this.host}${this.setPlayModeEndpoint}`, JSON.stringify(playModeRequest), httpOptions);
   }
 
@@ -67,13 +67,20 @@ export class ActionService {
     let sequenceRequest = new SequenceRequest();
 
     sequenceRequest.Type = "ABT";
-    sequenceRequest.Strokes = [0];
-    sequenceRequest.Speeds = [0];
+    sequenceRequest.Strokes = [];
+    sequenceRequest.Speeds = [];
     sequenceRequest.LoopMode = 0;
 
-    console.log(sequenceRequest);
-
     return this.http.post<StatusResponse>(`http://${this.host}${this.sequenceEndpoint}`, JSON.stringify(sequenceRequest), httpOptions);
+  }
+
+  public setSpeed(speeds: number[], playMode: number): Observable<SetSpeedResponse> {
+    let setSpeedRequest = new SetSpeedRequest();
+
+    setSpeedRequest.PlayMode = playMode;
+    setSpeedRequest.Speeds = [...speeds];
+
+    return this.http.post<SetSpeedResponse>(`http://${this.host}${this.setSpeedEndpoint}`, JSON.stringify(setSpeedRequest), httpOptions);
   }
 
   public setHost(host: string): void {

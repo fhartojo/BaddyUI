@@ -9,20 +9,20 @@
 </div>
 
 <div>
-  Shot sequence:&nbsp;&nbsp;{{sequence}}
+  Shot Sequence:&nbsp;&nbsp;{{sequence}}
 </div>
 
 <div>
-<label id="sequence-mode-radio-group-label">Sequence mode:&nbsp;&nbsp;</label>
+<label id="sequence-mode-radio-group-label">Sequence Mode:&nbsp;&nbsp;</label>
 <mat-radio-group aria-labelledby="sequence-mode-radio-group-label" [(ngModel)]="sequenceMode">
   <mat-radio-button value="0">Once</mat-radio-button>
-  <mat-radio-button value="1">Loop</mat-radio-button>
+  <mat-radio-button value="1">Continuous</mat-radio-button>
   <mat-radio-button value="2">Random</mat-radio-button>
 </mat-radio-group>
 </div>
 
 <mat-form-field>
-  <mat-label>Sequence interval</mat-label>
+  <mat-label>Sequence Interval</mat-label>
   <mat-select [(value)]="sequenceInterval" (selectionChange)="this.setSequenceInterval($event)">
     <mat-option value="0">0.5</mat-option>
     <mat-option value="1">1</mat-option>

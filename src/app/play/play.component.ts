@@ -1,4 +1,5 @@
 import { Component, OnInit } from '@angular/core';
+import { MatSnackBar } from '@angular/material';
 import { ActionService } from '../action.service';
 import { ShotProfileEnum } from '../shot-profile-enum.enum';
 import { SequenceRequest } from '../sequence-request';
@@ -16,7 +17,10 @@ export class PlayComponent implements OnInit {
   public sequenceInterval: string = "";
   public interval: number[] = [];
 
-  constructor(private actionService: ActionService) { }
+  constructor(
+    private actionService: ActionService
+    , private snackBar: MatSnackBar
+  ) { }
 
   ngOnInit() {
     for (var j in ShotProfileEnum) {
@@ -42,11 +46,18 @@ export class PlayComponent implements OnInit {
     console.log(`this.sequenceMode:  ${this.sequenceMode}`);
     console.log(`this.sequenceInterval:  ${this.sequenceInterval}`);
 
-    this.actionService.startSequence(this.sequence, Number(this.sequenceMode), Number(this.sequenceInterval)).subscribe();
+    this.actionService.startSequence(this.sequence, Number(this.sequenceMode), Number(this.sequenceInterval)).subscribe({
+      complete: () => this.showResponse('Sequence start successfully sent')
+    });
   }
 
   public stopSequence(): void {
-    this.actionService.stopSequence().subscribe();
+    let isRunning: boolean = true;
+
+    this.actionService.stopSequence().subscribe({
+      next: statusResponse => isRunning = statusResponse.Running
+      , complete: () => this.showResponse(isRunning ? 'Sequence failed to terminate' : 'Sequence successfully terminated')
+    });
   }
 
   public setSequenceInterval(event: any): void {
@@ -56,6 +67,12 @@ export class PlayComponent implements OnInit {
     this.sequence = [];
     this.sequenceMode = "";
     this.sequenceInterval = "";
+  }
+
+  private showResponse(message: string): void {
+    this.snackBar.open(message, '', {
+      duration: 2000
+    });
   }
 }
 

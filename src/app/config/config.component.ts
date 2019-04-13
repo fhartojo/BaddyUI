@@ -1,4 +1,4 @@
-import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef, Inject } from '@angular/core';
 import { ActionService } from '../action.service';
 import { FormGroup, FormControl } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
@@ -6,6 +6,9 @@ import { PlayModeRequest } from '../play-mode-request';
 import { PlayModeResponse } from '../play-mode-response';
 import { ShotProfile } from '../shot-profile';
 import { ShotProfileEnum } from '../shot-profile-enum.enum';
+import { MatSnackBar } from '@angular/material';
+import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
+import { SetSpeedResponse } from '../set-speed-response';
 
 @Component({
   selector: 'app-config',
@@ -25,7 +28,11 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
   public dataSource = new MatTableDataSource<ShotProfile>();
   public displayedColumns: string[] = ['type', 'leftMotorSpeed', 'rightMotorSpeed'];
 
-  constructor(private actionService: ActionService) { }
+  constructor(
+    private actionService: ActionService
+    , private snackBar: MatSnackBar
+    , public dialog: MatDialog
+  ) { }
 
   ngOnInit() {
     let savedHost = this.actionService.getHost();
@@ -58,7 +65,10 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
 
     this.actionService.setPlayMode(Number(this.playModeSelection)).subscribe({
       next: playModeResponse => this.currentPlayMode = playModeResponse
-      , complete: () => this.processCurrentPlayMode()
+      , complete: () => {
+        this.processCurrentPlayMode();
+        this.showResponse('Setup mode successfully changed');
+      }
     });
   }
 
@@ -71,6 +81,8 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
 
   private processCurrentPlayMode(): void {
     let i = 0;
+
+    this.shotProfiles = [];
 
     for (var j in ShotProfileEnum) {
       if (typeof ShotProfileEnum[j] === 'number') {
@@ -86,11 +98,67 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
       }
     }
 
-    this.dataSource.data = this.shotProfiles;
+    this.dataSource.data = [...this.shotProfiles];
     this.playModeSelection = String(this.currentPlayMode.PlayMode);
   }
 
   public editMotorSpeed(shotProfile: ShotProfile): void {
-    console.log(shotProfile);
+    const dialogRef = this.dialog.open(EditMotorSpeedDialog, {
+      width: '250px'
+      , data: {type: shotProfile.type, leftMotorSpeed: shotProfile.leftMotorSpeed, rightMotorSpeed: shotProfile.rightMotorSpeed}
+    });
+
+    dialogRef.afterClosed().subscribe(result => {
+      if (result !== undefined) {
+        shotProfile = result;
+        let speeds: number[] = [];
+
+        for (var i = 0; i < this.shotProfiles.length; i++) {
+          if (shotProfile.type === this.shotProfiles[i].type) {
+            this.shotProfiles[i].leftMotorSpeed = Number(shotProfile.leftMotorSpeed);
+            this.shotProfiles[i].rightMotorSpeed = Number(shotProfile.rightMotorSpeed);
+          }
+
+          speeds[i * 2] = this.shotProfiles[i].leftMotorSpeed;
+          speeds[i * 2 + 1] = this.shotProfiles[i].rightMotorSpeed;
+        }
+
+        let setSpeedResponse: SetSpeedResponse;
+        this.actionService.setSpeed(speeds, this.currentPlayMode.PlayMode).subscribe({
+          next: response => setSpeedResponse = response
+          , complete: () => {
+            if (setSpeedResponse.status === "success") {
+              this.showResponse(`Update for ${shotProfile.type} saved`);
+
+              this.dataSource.data = [...this.shotProfiles];
+            } else {
+              this.showResponse(`Update for ${shotProfile.type} failed`);
+            }
+          }
+        });
+      }
+    });
+  }
+
+  private showResponse(message: string): void {
+    this.snackBar.open(message, '', {
+      duration: 2000
+    });
+  }
+}
+
+@Component({
+  selector: 'edit-motor-speed-dialog',
+  templateUrl: 'edit-motor-speed-dialog.html'
+})
+export class EditMotorSpeedDialog {
+
+  constructor(
+    public dialogRef: MatDialogRef<EditMotorSpeedDialog>
+    , @Inject(MAT_DIALOG_DATA) public data: ShotProfile
+  ) {}
+
+  onCancel(): void {
+    this.dialogRef.close();
   }
 }
