@@ -1,17 +1,18 @@
 <form class="host-form" [formGroup]="hostForm" (ngSubmit)="this.setHost(); this.getPlayModeDump();">
   <mat-form-field class="host-full-width">
     <input matInput #host placeholder="Host Name or IP" formControlName="host" />
-    <button mat-raised-button matSuffix type="submit">Set</button>
+    <button mat-raised-button matSuffix type="submit" [disabled]="!hostForm.valid">Set</button>
   </mat-form-field>
 </form>
 
-<mat-form-field>
-  <mat-label>Setup Mode</mat-label>
-  <mat-select [(value)]="playModeSelection" (selectionChange)="this.setPlayMode($event)">
-    <mat-option value="0">On a tripod</mat-option>
-    <mat-option value="1">On the floor</mat-option>
-  </mat-select>
-</mat-form-field>
+<form [formGroup]="setupModeForm">
+  <mat-form-field>
+    <mat-label>Setup Mode</mat-label>
+    <mat-select formControlName="playMode" [disabled]="!this.isHostSet()" (selectionChange)="this.setPlayMode($event)">
+      <mat-option *ngFor="let setupModeSelection of setupModeSelections; let i = index" [value]="i">{{setupModeSelection}}</mat-option>
+    </mat-select>
+  </mat-form-field>
+</form>
 
 <div class="example-container mat-elevation-z8">
   <table mat-table [dataSource]="dataSource">

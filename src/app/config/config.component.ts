@@ -1,6 +1,6 @@
 import { Component, OnInit, OnDestroy, AfterViewInit, ViewChild, ElementRef, Inject } from '@angular/core';
 import { ActionService } from '../action.service';
-import { FormGroup, FormControl } from '@angular/forms';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 import { MatTableDataSource } from '@angular/material/table';
 import { PlayModeRequest } from '../play-mode-request';
 import { PlayModeResponse } from '../play-mode-response';
@@ -19,12 +19,15 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
 
   @ViewChild('host') hostElement: ElementRef;
   public hostForm = new FormGroup({
-    host: new FormControl('')
+    host: new FormControl('', [Validators.required])
+  });
+  public setupModeForm = new FormGroup({
+    playMode: new FormControl('')
   });
 
+  public setupModeSelections: string[] = ['On a tripod', 'On the floor'];
   private currentPlayMode: PlayModeResponse;
   private shotProfiles: ShotProfile[] = [];
-  public playModeSelection: string;
   public dataSource = new MatTableDataSource<ShotProfile>();
   public displayedColumns: string[] = ['type', 'leftMotorSpeed', 'rightMotorSpeed'];
 
@@ -61,9 +64,9 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
   }
 
   public setPlayMode(event: any): void {
-    console.log(`this.playModeSelection:  ${this.playModeSelection}`);
+    let playModeSelection = Number(this.setupModeForm.get("playMode").value);
 
-    this.actionService.setPlayMode(Number(this.playModeSelection)).subscribe({
+    this.actionService.setPlayMode(playModeSelection).subscribe({
       next: playModeResponse => this.currentPlayMode = playModeResponse
       , complete: () => {
         this.processCurrentPlayMode();
@@ -99,7 +102,7 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
     }
 
     this.dataSource.data = [...this.shotProfiles];
-    this.playModeSelection = String(this.currentPlayMode.PlayMode);
+    this.setupModeForm.get("playMode").setValue(this.currentPlayMode.PlayMode);
   }
 
   public editMotorSpeed(shotProfile: ShotProfile): void {
@@ -138,6 +141,10 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
         });
       }
     });
+  }
+
+  public isHostSet(): boolean {
+    return (this.actionService.getHost() !== "");
   }
 
   private showResponse(message: string): void {
