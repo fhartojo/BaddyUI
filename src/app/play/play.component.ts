@@ -3,6 +3,7 @@ import { MatSnackBar } from '@angular/material';
 import { ActionService } from '../action.service';
 import { ShotProfileEnum } from '../shot-profile-enum.enum';
 import { SequenceRequest } from '../sequence-request';
+import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({
   selector: 'app-play',
@@ -12,10 +13,14 @@ import { SequenceRequest } from '../sequence-request';
 export class PlayComponent implements OnInit {
 
   public tiles: Tile[] = [];
+  public modeSelections: string[] = ['Once', 'Continuous', 'Random'];
+  public intervalSelections: string[] = ['0.5', '1', '1.5', '2', '2.5', '3', '3.5', '4', '4.5', '5'];
   public sequence: number[] = [];
-  public sequenceMode: string = "";
-  public sequenceInterval: string = "";
-  public interval: number[] = [];
+  public playForm = new FormGroup({
+    strokes: new FormControl({value: '', disabled: true}, [Validators.required]),
+    mode: new FormControl('', [Validators.required]),
+    interval: new FormControl('', [Validators.required])
+  });
 
   constructor(
     private actionService: ActionService
@@ -39,14 +44,18 @@ export class PlayComponent implements OnInit {
     let newSequence: number[] = [position];
 
     this.sequence = this.sequence.concat(newSequence);
+    this.playForm.get("strokes").setValue(this.sequence);
   }
 
   public startSequence(): void {
-    console.log(`this.sequence:  ${this.sequence}`);
-    console.log(`this.sequenceMode:  ${this.sequenceMode}`);
-    console.log(`this.sequenceInterval:  ${this.sequenceInterval}`);
+    let mode = Number(this.playForm.get("mode").value);
+    let interval = Number(this.playForm.get("interval").value);
 
-    this.actionService.startSequence(this.sequence, Number(this.sequenceMode), Number(this.sequenceInterval)).subscribe({
+    console.log(`sequence:  ${this.sequence}`);
+    console.log(`mode:  ${mode}`);
+    console.log(`interval:  ${interval}`);
+
+    this.actionService.startSequence(this.sequence, mode, interval).subscribe({
       complete: () => this.showResponse('Sequence start successfully sent')
     });
   }
@@ -60,13 +69,19 @@ export class PlayComponent implements OnInit {
     });
   }
 
-  public setSequenceInterval(event: any): void {
-  }
-
   public resetAll(): void {
     this.sequence = [];
-    this.sequenceMode = "";
-    this.sequenceInterval = "";
+    this.playForm.get("strokes").setValue("");
+    this.playForm.get("mode").setValue("");
+    this.playForm.get("interval").setValue("");
+  }
+
+  public isHostSet(): boolean {
+    return (this.actionService.getHost() !== "");
+  }
+
+  public isStrokesSet(): boolean {
+    return (this.sequence.length > 0);
   }
 
   private showResponse(message: string): void {
