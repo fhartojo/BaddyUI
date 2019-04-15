@@ -20,6 +20,8 @@ import { EditMotorSpeedDialog } from './config/config.component';
 import { PlayComponent } from './play/play.component';
 import { StatusComponent } from './status/status.component';
 import 'hammerjs';
+import { ServiceWorkerModule } from '@angular/service-worker';
+import { environment } from '../environments/environment';
 
 @NgModule({
   declarations: [
@@ -44,7 +46,8 @@ import 'hammerjs';
     MatSnackBarModule,
     MatDialogModule,
     FormsModule,
-    ReactiveFormsModule
+    ReactiveFormsModule,
+    ServiceWorkerModule.register('ngsw-worker.js', { enabled: environment.production })
   ],
   entryComponents: [
     EditMotorSpeedDialog
