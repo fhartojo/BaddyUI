@@ -9,6 +9,7 @@ import { ShotProfileEnum } from '../shot-profile-enum.enum';
 import { MatSnackBar } from '@angular/material';
 import { MatDialog, MatDialogRef, MAT_DIALOG_DATA } from '@angular/material';
 import { SetSpeedResponse } from '../set-speed-response';
+import { ProfileResponse } from '../profile-response';
 
 @Component({
   selector: 'app-config',
@@ -145,6 +146,42 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public isHostSet(): boolean {
     return (this.actionService.getHost() !== "");
+  }
+
+  public setRetainerUp(): void {
+    let profileResponse: ProfileResponse;
+
+    this.actionService.setRetainerUp().subscribe({
+      next: response => profileResponse = response
+      , complete: () => this.showResponse("Retainer successfully adjusted upward")
+    });
+  }
+
+  public setRetainerDown(): void {
+    let profileResponse: ProfileResponse;
+
+    this.actionService.setRetainerDown().subscribe({
+      next: response => profileResponse = response
+      , complete: () => this.showResponse("Retainer successfully adjusted downward")
+    });
+  }
+
+  public setSwitchForward(): void {
+    let profileResponse: ProfileResponse;
+
+    this.actionService.setSwitchForward().subscribe({
+      next: response => profileResponse = response
+      , complete: () => this.showResponse("Switch successfully adjusted forward")
+    });
+  }
+
+  public setSwitchBackward(): void {
+    let profileResponse: ProfileResponse;
+
+    this.actionService.setSwitchBackward().subscribe({
+      next: response => profileResponse = response
+      , complete: () => this.showResponse("Switch successfully adjusted backward")
+    });
   }
 
   private showResponse(message: string): void {

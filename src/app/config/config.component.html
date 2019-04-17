@@ -1,18 +1,22 @@
-<form class="host-form" [formGroup]="hostForm" (ngSubmit)="this.setHost(); this.getPlayModeDump();">
-  <mat-form-field class="host-full-width">
-    <input matInput #host placeholder="Host Name or IP" formControlName="host" />
-    <button mat-raised-button matSuffix type="submit" [disabled]="!hostForm.valid">Set</button>
-  </mat-form-field>
-</form>
+<div>
+  <form class="host-form" [formGroup]="hostForm" (ngSubmit)="this.setHost(); this.getPlayModeDump();">
+    <mat-form-field class="host-full-width">
+      <input matInput #host placeholder="Host Name or IP" formControlName="host" />
+      <button mat-raised-button matSuffix type="submit" [disabled]="!hostForm.valid">Set</button>
+    </mat-form-field>
+  </form>
+</div>
 
-<form [formGroup]="setupModeForm">
-  <mat-form-field>
-    <mat-label>Setup Mode</mat-label>
-    <mat-select formControlName="playMode" [disabled]="!this.isHostSet()" (selectionChange)="this.setPlayMode($event)">
-      <mat-option *ngFor="let setupModeSelection of setupModeSelections; let i = index" [value]="i">{{setupModeSelection}}</mat-option>
-    </mat-select>
-  </mat-form-field>
-</form>
+<div>
+  <form [formGroup]="setupModeForm">
+    <mat-form-field>
+      <mat-label>Setup Mode</mat-label>
+      <mat-select formControlName="playMode" [disabled]="!this.isHostSet()" (selectionChange)="this.setPlayMode($event)">
+        <mat-option *ngFor="let setupModeSelection of setupModeSelections; let i = index" [value]="i">{{setupModeSelection}}</mat-option>
+      </mat-select>
+    </mat-form-field>
+  </form>
+</div>
 
 <div class="example-container mat-elevation-z8">
   <table mat-table [dataSource]="dataSource">
@@ -36,3 +40,32 @@
     <tr mat-row *matRowDef="let row; columns: displayedColumns;" (click)="editMotorSpeed(row)"></tr>
   </table>
 </div>
+
+<mat-accordion>
+  <mat-expansion-panel>
+    <mat-expansion-panel-header>
+      <mat-panel-title>
+        Advanced Configuration
+      </mat-panel-title>
+    </mat-expansion-panel-header>
+
+    <div class="adv-conf-grid-list-container">
+      <mat-grid-list cols="3" rowHeight="1:1">
+        <mat-grid-tile>
+          <button mat-raised-button type="button" [disabled]="!this.isHostSet()" (click)="this.setRetainerDown()"><mat-icon>arrow_downward</mat-icon></button>
+        </mat-grid-tile>
+        <mat-grid-tile>Retainer</mat-grid-tile>
+        <mat-grid-tile>
+          <button mat-raised-button type="button" [disabled]="!this.isHostSet()" (click)="this.setRetainerUp()"><mat-icon>arrow_upward</mat-icon></button>
+        </mat-grid-tile>
+        <mat-grid-tile>
+          <button mat-raised-button type="button" [disabled]="!this.isHostSet()" (click)="this.setSwitchBackward()"><mat-icon>arrow_back</mat-icon></button>
+        </mat-grid-tile>
+        <mat-grid-tile>Switch</mat-grid-tile>
+        <mat-grid-tile>
+          <button mat-raised-button type="button" [disabled]="!this.isHostSet()" (click)="this.setSwitchForward()"><mat-icon>arrow_forward</mat-icon></button>
+        </mat-grid-tile>
+      </mat-grid-list>
+    </div>
+  </mat-expansion-panel>
+</mat-accordion>

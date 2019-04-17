@@ -7,6 +7,7 @@ import { PlayModeResponse } from './play-mode-response';
 import { SequenceRequest } from './sequence-request';
 import { SetSpeedRequest } from './set-speed-request';
 import { SetSpeedResponse } from './set-speed-response';
+import { ProfileResponse } from './profile-response';
 
 const httpOptions = {
   headers: new HttpHeaders({ 'Content-Type': 'application/x-www-form-urlencoded' })
@@ -81,6 +82,22 @@ export class ActionService {
     setSpeedRequest.Speeds = [...speeds];
 
     return this.http.post<SetSpeedResponse>(`http://${this.host}${this.setSpeedEndpoint}`, JSON.stringify(setSpeedRequest), httpOptions);
+  }
+
+  public setRetainerUp(): Observable<ProfileResponse> {
+    return this.http.get<ProfileResponse>(`http://${this.host}${this.retainerUpEndpoint}`);
+  }
+
+  public setRetainerDown(): Observable<ProfileResponse> {
+    return this.http.get<ProfileResponse>(`http://${this.host}${this.retainerDownEndpoint}`);
+  }
+
+  public setSwitchForward(): Observable<ProfileResponse> {
+    return this.http.get<ProfileResponse>(`http://${this.host}${this.switchForwardEndpoint}`);
+  }
+
+  public setSwitchBackward(): Observable<ProfileResponse> {
+    return this.http.get<ProfileResponse>(`http://${this.host}${this.switchBackwardEndpoint}`);
   }
 
   public setHost(host: string): void {
