@@ -39,18 +39,18 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
   ) { }
 
   ngOnInit() {
-    let savedHost = this.actionService.getHost();
-
-    if (savedHost !== "") {
-      this.hostForm.get("host").setValue(savedHost);
+    if (this.isHostSet()) {
+      this.hostForm.get("host").setValue(this.actionService.getHost());
       this.getPlayModeDump();
     }
   }
 
   ngAfterViewInit() {
-    setTimeout(() => {
-      this.hostElement.nativeElement.focus();
-    }, 0);
+    if (! this.isHostSet()) {
+      setTimeout(() => {
+        this.hostElement.nativeElement.focus();
+      }, 0);
+    }
   }
 
   ngOnDestroy() {
