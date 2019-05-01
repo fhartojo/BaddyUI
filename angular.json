@@ -37,6 +37,7 @@
                   "with": "src/environments/environment.prod.ts"
                 }
               ],
+              "baseHref": "/BaddyUI/",
               "optimization": true,
               "outputHashing": "none",
               "sourceMap": false,
