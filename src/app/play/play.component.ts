@@ -2,7 +2,6 @@ import { Component, OnInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActionService } from '../action.service';
 import { ShotProfileEnum } from '../shot-profile-enum.enum';
-import { SequenceRequest } from '../sequence-request';
 import { FormGroup, FormControl, Validators } from '@angular/forms';
 
 @Component({

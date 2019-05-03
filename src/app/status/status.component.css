@@ -1,0 +1,8 @@
+.shot-stat-table-container {
+  height: 100vh;
+  overflow: auto;
+}
+
+table {
+  width: 100%;
+}

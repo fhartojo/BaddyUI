@@ -1,3 +1,24 @@
-<p>
-  status works!
-</p>
+<div>
+  <p>ID:  {{this.statusResponse.Baddy_id}}</p>
+  <p>Running:  {{this.statusResponse.Running}}</p>
+  <p>Battery Level:  {{this.statusResponse.Battery}}</p>
+  <p>Firmware:  {{this.statusResponse.Firmware_version}}</p>
+</div>
+
+<div class="shot-stat-table-container mat-elevation-z8">
+  <table mat-table [dataSource]="dataSource">
+
+    <ng-container matColumnDef="type">
+      <th mat-header-cell *matHeaderCellDef>Shot Type</th>
+      <td mat-cell *matCellDef="let shotStat">{{shotStat.type}}</td>
+    </ng-container>
+
+    <ng-container matColumnDef="count">
+      <th mat-header-cell *matHeaderCellDef>Shot Count</th>
+      <td mat-cell *matCellDef="let shotStat">{{shotStat.count}}</td>
+    </ng-container>
+
+    <tr mat-header-row *matHeaderRowDef="displayedColumns; sticky: true"></tr>
+    <tr mat-row *matRowDef="let row; columns: displayedColumns;"></tr>
+  </table>
+</div>
