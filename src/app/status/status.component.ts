@@ -14,7 +14,7 @@ export class StatusComponent implements OnInit {
   constructor(private actionService: ActionService) { }
 
   private shotStats: ShotStat[] = [];
-  public statusResponse: StatusResponse;
+  public statusResponse: StatusResponse = new StatusResponse();
   public dataSource = new MatTableDataSource<ShotStat>();
   public displayedColumns: string[] = ['type', 'count'];
 

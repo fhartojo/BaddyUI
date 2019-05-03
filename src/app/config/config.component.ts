@@ -61,6 +61,11 @@ export class ConfigComponent implements OnInit, OnDestroy, AfterViewInit {
 
     if (host !== "") {
       this.actionService.setHost(host);
+
+      //New Baddy host.  Start a new session.
+      if (sessionStorage) {
+        sessionStorage.clear();
+      }
     }
   }
 

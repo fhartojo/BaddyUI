@@ -1,4 +1,4 @@
-import { Component, OnInit } from '@angular/core';
+import { Component, OnInit, OnDestroy, AfterViewInit } from '@angular/core';
 import { MatSnackBar } from '@angular/material';
 import { ActionService } from '../action.service';
 import { ShotProfileEnum } from '../shot-profile-enum.enum';
@@ -9,7 +9,7 @@ import { FormGroup, FormControl, Validators } from '@angular/forms';
   templateUrl: './play.component.html',
   styleUrls: ['./play.component.css']
 })
-export class PlayComponent implements OnInit {
+export class PlayComponent implements OnInit, OnDestroy, AfterViewInit {
 
   public tiles: Tile[] = [];
   public modeSelections: string[] = ['Once', 'Continuous', 'Random'];
@@ -37,6 +37,26 @@ export class PlayComponent implements OnInit {
         this.tiles.push(tile);
       }
     }
+
+    if (sessionStorage) {
+      if (sessionStorage.length > 0) {
+        this.playForm.get("mode").setValue(Number(sessionStorage.getItem("mode")));
+        this.playForm.get("interval").setValue(Number(sessionStorage.getItem("interval")));
+        this.sequence = JSON.parse(sessionStorage.getItem("strokes"));
+        this.playForm.get("strokes").setValue(this.sequence);
+      }
+    }
+  }
+
+  ngOnDestroy() {
+    if (sessionStorage) {
+      sessionStorage.setItem("mode", this.playForm.get("mode").value);
+      sessionStorage.setItem("interval", this.playForm.get("interval").value);
+      sessionStorage.setItem("strokes", JSON.stringify(this.sequence));
+    }
+  }
+
+  ngAfterViewInit() {
   }
 
   public addSequence(position: number): void {
